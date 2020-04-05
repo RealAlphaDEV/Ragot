@@ -1,15 +1,15 @@
-#Ragot
+# Ragot
 Ragot is an api that serves you as a toolbox to use it in your plugin you have to do.
 
 ```
 RagotProvider ragotProvider = Ragot.get();
 ```
 
-#Tools
+# Tools
 
 * [RItem](#RItem) system to create items quickly and the possibility to add shares.
 
-#RItem
+# RItem
 
 For an easy use you create your item using the RItemBuilder class.
 ```java
