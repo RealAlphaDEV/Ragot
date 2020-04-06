@@ -77,7 +77,7 @@ public class ExamplePlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onJoi(PlayerJoinEvent event){
+    public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         player.getInventory().addItem(rItemManager.getItem(ExampleItem.class));
     }
