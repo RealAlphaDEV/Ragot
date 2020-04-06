@@ -58,7 +58,8 @@ You can put different actions such as
 - setItemDamageEvent
 - setPickupItemEvent
 
-Now you have to register the class in the onEnable
+Now you have to register the class in the onEnable.
+To retrieve your item you do a getItem.
 
 ```java
 public class ExamplePlugin extends JavaPlugin implements Listener {
