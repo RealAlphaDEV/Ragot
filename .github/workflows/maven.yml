@@ -26,4 +26,4 @@ jobs:
     # Artifact name
        name: Ragot
     # Directory containing files to upload
-       path: /
+       path: /home/runner/work/Ragot/Ragot/target/Ragot-1.0-SNAPSHOT.jar
