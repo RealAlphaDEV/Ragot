@@ -20,21 +20,17 @@ public class RItemManager {
     }
 
     public RItemBuilder getItem(Class<? extends RItemProvider> aClass)  {
-            return this.map.getOrDefault(aClass, new DefaultRItem(Material.STONE)).getRItemBuilder().unsafe().setString("RItemProvider", aClass.getName()).toItemBuilder();
+            return this.map.getOrDefault(aClass, new DefaultRItem()).getRItemBuilder().unsafe().setString("RItemProvider", aClass.getName()).toItemBuilder();
     }
 
-    public RItemProvider getItemProvider(Class<? extends RItemProvider> aClass)  {
-        return this.map.getOrDefault(aClass, new DefaultRItem(Material.STONE));
+    protected RItemProvider getItemProvider(Class<? extends RItemProvider> aClass)  {
+        return this.map.getOrDefault(aClass, new DefaultRItem());
     }
 
     private class DefaultRItem extends RItemProvider {
-        public DefaultRItem(Material m) {
-            super(m);
-        }
-
         @Override
-        public void build(RItemBuilder RItemBuilder) {
-
+        public RItemBuilder getRItemBuilder() {
+            return new RItemBuilder(Material.BLAZE_ROD);
         }
     }
 }

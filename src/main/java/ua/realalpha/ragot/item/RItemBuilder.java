@@ -158,10 +158,6 @@ public class RItemBuilder extends ItemStack {
         return new RUnsafe(this);
     }
 
-    public ItemStack toItemStack(){
-        return this;
-    }
-
     private Object getGameProfile() throws Exception{
         Class<?> aClass = Class.forName("com.mojang.authlib.GameProfile");
         return aClass.getConstructor(UUID.class, String.class).newInstance(UUID.randomUUID(), null);
