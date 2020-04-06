@@ -27,3 +27,4 @@ jobs:
        name: Ragot
     # Directory containing files to upload
        path: /home/runner/work/Ragot/Ragot/target/Ragot-1.0-SNAPSHOT.jar
+       run: mvn deploy -Dregistry=https://maven.pkg.github.com/RealAlphaDEV -Dtoken=d7e44d85a593220171fa167baad683b21bd925af 
