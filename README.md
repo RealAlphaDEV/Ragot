@@ -5,10 +5,6 @@ Ragot is an api that serves you as a toolbox to use it in your plugin you have t
 RagotProvider ragotProvider = Ragot.get();
 ```
 
-# Contents
-
-- [RItem](#RItem) system to create items quickly and the possibility to add shares.
-- [RInventory](#RInventory) system to create inventories quickly and the possibility to add shares.
 
 # RItem
 
