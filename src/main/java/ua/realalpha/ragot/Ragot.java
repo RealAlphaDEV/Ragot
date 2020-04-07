@@ -8,7 +8,7 @@ public class Ragot extends JavaPlugin {
     @Override
     public void onEnable() {
         ragotProvider = new RagotConsumer(this);
-        
+
         super.onEnable();
     }
 
