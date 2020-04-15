@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class RItemBuilder extends ItemStack {
+public class RItemBuilder extends ItemStack{
 
     public RItemBuilder(Material type) {
         super(type);
@@ -26,12 +26,8 @@ public class RItemBuilder extends ItemStack {
         super(type, amount);
     }
 
-    public RItemBuilder(Material type, int amount, int damage) {
-        super(type, amount, (short) damage);
-    }
-
-    public RItemBuilder(Material type, int amount, int damage, Byte data) {
-        super(type, amount, (short) damage, data);
+    public RItemBuilder(Material type, int amount, int data) {
+        super(type, amount, (short) data);
     }
 
     public RItemBuilder(ItemStack stack)  {
@@ -167,12 +163,12 @@ public class RItemBuilder extends ItemStack {
         Class<?> aClass = o.getClass();
         Method method = aClass.getMethod("getProperties");
         method.setAccessible(true);
-        return method.invoke(o, null);
+        return method.invoke(o);
     }
 
     private void putTexture(Object object, byte[] bytes) throws Exception{
         Class<?> aClass = Class.forName("com.mojang.authlib.properties.Property");
         Object o = aClass.getConstructor(String.class, String.class).newInstance("textures", new String(bytes));
-        object.getClass().getMethod("put", String.class, aClass).invoke(object,"textures", o);
+        object.getClass().getMethod("put", Object.class, Object.class).invoke(object,"textures", o);
     }
 }
