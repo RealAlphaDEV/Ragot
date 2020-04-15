@@ -30,7 +30,7 @@ public class RItemManager {
     private class DefaultRItem extends RItemProvider {
         @Override
         public RItemBuilder getRItemBuilder() {
-            return new RItemBuilder(Material.BLAZE_ROD);
+            return new RItemBuilder(Material.GRASS);
         }
     }
 }

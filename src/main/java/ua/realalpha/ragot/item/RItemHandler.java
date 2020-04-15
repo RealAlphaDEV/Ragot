@@ -21,8 +21,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setInteractEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
 
@@ -36,8 +35,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setDropEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
 
@@ -51,8 +49,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setItemBreakEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
     }
@@ -65,8 +62,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setItemConsumeEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
     }
@@ -79,8 +75,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setItemDamageEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
     }
@@ -93,8 +88,7 @@ public class RItemHandler implements Listener {
             try {
                 Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(RItemBuilder.unsafe().getString("RItemProvider"));
                 itemManager.getItemProvider(itemProvider).setPickupItemEvent(event);
-            }catch (Exception e){
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
     }
