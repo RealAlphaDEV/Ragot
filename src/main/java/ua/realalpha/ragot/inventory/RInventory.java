@@ -1,6 +1,7 @@
 package ua.realalpha.ragot.inventory;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -11,24 +12,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public abstract class RInventory implements InventoryHolder {
+public class RInventory implements InventoryHolder, RInventoryEvent {
 
     private Inventory inventory;
-    private Map<Integer, Consumer<InventoryClickEvent>> map;
+    private Map<Integer, Consumer<InventoryClickEvent>> mapShare;
 
     public RInventory(String name, int size) {
-        this.inventory = Bukkit.createInventory(null, size, name);
-        this.map = new HashMap<>();
+        this.inventory = Bukkit.createInventory(this, size, name);
+        this.mapShare = new HashMap<>();
     }
 
     public RInventory(String name, InventoryType inventoryType) {
-        this.inventory = Bukkit.createInventory(null, inventoryType, name);
-        this.map = new HashMap<>();
+        this.inventory = Bukkit.createInventory(this, inventoryType, name);
+        this.mapShare = new HashMap<>();
     }
 
     public void addItem(ItemStack itemStack){
         int slot = inventory.firstEmpty();
-        this.inventory.setItem(slot, itemStack);
+        this.setItem(slot, itemStack);
     }
 
     public void addItem(ItemStack itemStack, Consumer<InventoryClickEvent> consumer){
@@ -42,7 +43,7 @@ public abstract class RInventory implements InventoryHolder {
 
     public void setItem(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> consumer){
         this.inventory.setItem(slot, itemStack);
-        this.map.put(slot, consumer);
+        this.mapShare.put(slot, consumer);
     }
 
     public void setItem(int[] slot, ItemStack itemStack){
@@ -54,6 +55,7 @@ public abstract class RInventory implements InventoryHolder {
             this.setItem(i, itemStack, consumer);
         }
     }
+
     public void setHorizontalLine(int from, int to, ItemStack itemStack) {
         setHorizontalLine(from, to, itemStack, null);
     }
@@ -61,7 +63,7 @@ public abstract class RInventory implements InventoryHolder {
     public void setHorizontalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
         for (int i = from; i <= to; i++) {
             inventory.setItem(i, itemStack);
-            if(consumer != null) this.map.put(i, consumer);
+            if(consumer != null) this.mapShare.put(i, consumer);
         }
     }
 
@@ -72,16 +74,22 @@ public abstract class RInventory implements InventoryHolder {
     public void setVerticalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
         for (int i = from; i <= to; i += 9) {
             inventory.setItem(i, itemStack);
-            if(consumer != null) this.map.put(i, consumer);
+            if(consumer != null) this.mapShare.put(i, consumer);
         }
     }
 
-    public void update(Consumer<?> consumer, int delay){
-
+    public void open(Player player){
+        player.openInventory(this.inventory);
     }
+
 
     @Override
     public Inventory getInventory() {
         return inventory;
     }
+
+     final Map<Integer, Consumer<InventoryClickEvent>> getMapShare() {
+        return mapShare;
+    }
+
 }
