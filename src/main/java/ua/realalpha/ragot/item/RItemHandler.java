@@ -1,5 +1,6 @@
 package ua.realalpha.ragot.item;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,9 +37,9 @@ public class RItemHandler implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
-        if (event.getClickedInventory().getHolder() instanceof Player) {
+        if (event.getClickedInventory() != null && event.getClickedInventory().getHolder() instanceof Player) {
             ItemStack itemStack = event.getCurrentItem();
-            if (itemStack == null) return;
+            if (itemStack == null || itemStack.getType() == Material.AIR) return;
             RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
             callListener(rItemBuilder, rItemEvent -> rItemEvent.setInventoryClickEvent(event));
         }
@@ -173,7 +174,7 @@ public class RItemHandler implements Listener {
     }
 
     private boolean isRItem(ItemStack itemStack){
-        return new RItemBuilder(itemStack).unsafe().containsTag("RItemProvider");
+        return itemStack != null && new RItemBuilder(itemStack).unsafe().containsTag("RItemProvider");
     }
 
 
