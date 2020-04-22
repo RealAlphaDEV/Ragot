@@ -11,7 +11,7 @@ RagotProvider ragotProvider = Ragot.get();
 For an easy use you create your item using the RItemBuilder class.
 ```java
 new RItemBuilder(Material.STICK)
-        .setName(ChatColor.GOLD + "Item")
+        .setName(ChatColor.GOLD + "ua.realalpha.ragot.Item")
         .setLore("Hey", "Hello");
 ```
 To give it to the player.
@@ -23,7 +23,7 @@ public class Example implements Listener{
         Player player = event.getPlayer();
         player.getInventory().addItem(
                 new RItemBuilder(Material.STICK)
-                        .setName(ChatColor.GOLD + "Item")
+                        .setName(ChatColor.GOLD + "ua.realalpha.ragot.Item")
                         .setLore("Hey", "Hello"));
     }
 }
@@ -35,7 +35,7 @@ public class ExampleItem extends RItemProvider {
     @Override
     public RItemBuilder getRItemBuilder() {
         return new RItemBuilder(Material.STICK)
-                .setName(ChatColor.GOLD + "Item")
+                .setName(ChatColor.GOLD + "ua.realalpha.ragot.Item")
                 .setLore("Hey", "Hello");
     }
     
