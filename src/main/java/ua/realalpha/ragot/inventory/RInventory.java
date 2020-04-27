@@ -12,19 +12,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class RInventory implements InventoryHolder, RInventoryEvent {
+public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
     private Inventory inventory;
+    private PageController pageController;
     private Map<Integer, Consumer<InventoryClickEvent>> mapShare;
 
     public RInventory(String name, int size) {
         this.inventory = Bukkit.createInventory(this, size, name);
         this.mapShare = new HashMap<>();
+        this.pageController = new PageController(this);
     }
+
 
     public RInventory(String name, InventoryType inventoryType) {
         this.inventory = Bukkit.createInventory(this, inventoryType, name);
         this.mapShare = new HashMap<>();
+        this.pageController = new PageController(this);
     }
 
     public void addItem(ItemStack itemStack){
@@ -36,6 +40,7 @@ public class RInventory implements InventoryHolder, RInventoryEvent {
         int slot = inventory.firstEmpty();
         this.setItem(slot, itemStack, consumer);
     }
+
 
     public void setItem(int slot, ItemStack itemStack){
         this.inventory.setItem(slot, itemStack);
@@ -77,6 +82,36 @@ public class RInventory implements InventoryHolder, RInventoryEvent {
             if(consumer != null) this.mapShare.put(i, consumer);
         }
     }
+
+    public void setPageController(Consumer<PageController> pageController){
+        pageController.accept(this.pageController);
+        this.pageController.setUp();
+    }
+
+    public PageController getPageController(){
+        return this.pageController;
+    }
+
+    public int[] getBoard(int slotfrom, int lenth, int width){
+        int[] board = new int[lenth*width];
+        int size = 0;
+        int adder = 0;
+        int multiplicateur = 1;
+        int l = 0;
+        while (size != board.length){
+            board[size] = slotfrom + adder;
+            adder++;
+            size++;
+            l++;
+            if(l == lenth){
+                adder = multiplicateur*9;
+                multiplicateur++;
+                l = 0;
+            }
+        }
+        return board;
+    }
+
 
     public void open(Player player){
         player.openInventory(this.inventory);
