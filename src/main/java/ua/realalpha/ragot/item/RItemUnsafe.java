@@ -1,9 +1,9 @@
 package ua.realalpha.ragot.item;
 
-public class RUnsafe {
+public class RItemUnsafe {
 
     private RItemBuilder RItemBuilder;
-    public RUnsafe(RItemBuilder RItemBuilder) {
+    public RItemUnsafe(RItemBuilder RItemBuilder) {
         this.RItemBuilder = RItemBuilder;
     }
 
@@ -11,12 +11,12 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).getString(tag);
     }
 
-    public RUnsafe setString(String tag, String value){
+    public RItemUnsafe setString(String tag, String value){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setString(tag, value).build());
         return this;
     }
 
-    public RUnsafe setByte(String tag, byte b){
+    public RItemUnsafe setByte(String tag, byte b){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setByte(tag, b).build());
         return this;
     }
@@ -25,7 +25,7 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).getByte(tag);
     }
 
-    public RUnsafe setShort(String tag, short b){
+    public RItemUnsafe setShort(String tag, short b){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setShort(tag, b).build());
         return this;
     }
@@ -34,7 +34,7 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).getShort(tag);
     }
 
-    public RUnsafe setInt(String tag, int b){
+    public RItemUnsafe setInt(String tag, int b){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setInt(tag, b).build());
         return this;
     }
@@ -43,7 +43,7 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).getInt(tag);
     }
 
-    public RUnsafe setByteArray(String tag, byte[] b){
+    public RItemUnsafe setByteArray(String tag, byte[] b){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setByteArray(tag, b).build());
         return this;
     }
@@ -52,7 +52,7 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).getByteArray(tag);
     }
 
-    public RUnsafe setIntArray(String tag, int[] b){
+    public RItemUnsafe setIntArray(String tag, int[] b){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).setIntArray(tag, b).build());
         return this;
     }
@@ -65,7 +65,7 @@ public class RUnsafe {
         return new RNBTItem(this.RItemBuilder).containsTag(s);
     }
 
-    public RUnsafe remove(String tag){
+    public RItemUnsafe remove(String tag){
         this.RItemBuilder = new RItemBuilder(new RNBTItem(this.RItemBuilder).removeTag(tag).build());
         return this;
     }

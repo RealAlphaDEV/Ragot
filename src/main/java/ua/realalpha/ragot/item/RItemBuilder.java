@@ -1,6 +1,7 @@
 package ua.realalpha.ragot.item;
 
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -38,7 +39,6 @@ public class RItemBuilder extends ItemStack{
         return new RItemBuilder(this);
     }
 
-
     public RItemBuilder setName(String name) {
         ItemMeta im = this.getItemMeta();
         im.setDisplayName(name);
@@ -50,8 +50,6 @@ public class RItemBuilder extends ItemStack{
         ItemMeta im = this.getItemMeta();
         return im.getDisplayName();
     }
-
-
 
     public RItemBuilder setSkullOwner(String owner) {
         try {
@@ -150,8 +148,13 @@ public class RItemBuilder extends ItemStack{
         return this;
     }
 
-    public RUnsafe unsafe(){
-        return new RUnsafe(this);
+    public RItemBuilder setColor(DyeColor color){
+        this.setDurability(color.getData());
+        return this;
+    }
+
+    public RItemUnsafe unsafe(){
+        return new RItemUnsafe(this);
     }
 
     private Object getGameProfile() throws Exception{
