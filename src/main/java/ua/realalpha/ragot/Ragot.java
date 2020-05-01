@@ -1,13 +1,26 @@
 package ua.realalpha.ragot;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import ua.realalpha.ragot.inventory.RInventoryHandler;
+import ua.realalpha.ragot.inventory.RInventoryManager;
+import ua.realalpha.ragot.inventory.RInventoryTask;
+import ua.realalpha.ragot.item.RItemHandler;
 
 public class Ragot extends JavaPlugin {
 
-    private static RagotProvider ragotProvider;
     @Override
     public void onEnable() {
-        ragotProvider = new RagotConsumer(this);
+        final RInventoryManager rInventoryManager = new RInventoryManager();
+
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new RInventoryHandler(this, rInventoryManager), this);
+        pluginManager.registerEvents(new RItemHandler(), this);
+
+        new RInventoryTask(rInventoryManager).runTaskTimer(this, 0, 1);
+
+
         super.onEnable();
     }
 
@@ -15,11 +28,6 @@ public class Ragot extends JavaPlugin {
     public void onDisable() {
         super.onDisable();
     }
-
-    public static RagotProvider get(){
-        return ragotProvider;
-    }
-
 
 
 }
