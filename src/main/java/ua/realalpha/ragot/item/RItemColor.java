@@ -27,4 +27,11 @@ public enum RItemColor {
     public short getData() {
         return (short) data;
     }
+
+    public static RItemColor getByData(int data){
+        for (RItemColor value : RItemColor.values()) {
+            if(value.getData() == data) return value;
+        }
+        throw new NullPointerException();
+    }
 }

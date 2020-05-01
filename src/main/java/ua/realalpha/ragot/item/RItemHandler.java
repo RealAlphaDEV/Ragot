@@ -18,165 +18,157 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.util.function.Consumer;
 
 public class RItemHandler implements Listener {
 
-    private RItemManager itemManager;
-    public RItemHandler(RItemManager itemManager) {
-        this.itemManager = itemManager;
-    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
         ItemStack itemStack = event.getItem();
-        if(itemStack == null) return;
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerInteractEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerInteractEvent().accept(event));
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
         if (event.getClickedInventory() != null && event.getClickedInventory().getHolder() instanceof Player) {
             ItemStack itemStack = event.getCurrentItem();
-            if (itemStack == null || itemStack.getType() == Material.AIR) return;
-            RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-            callListener(rItemBuilder, rItemEvent -> rItemEvent.setInventoryClickEvent(event));
+            call(itemStack, rItemEvent -> rItemEvent.getInventoryClickEvent().accept(event));
         }
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event){
         ItemStack itemStack = event.getItemDrop().getItemStack();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerDropEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerDropItemEvent().accept(event));
 
     }
 
     @EventHandler
     public void itemBreakEvent(PlayerItemBreakEvent event){
         ItemStack itemStack = event.getBrokenItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerItemBreakEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerItemBreakEvent().accept(event));
     }
 
     @EventHandler
     public void itemConsumeEvent(PlayerItemConsumeEvent event){
         ItemStack itemStack = event.getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerItemConsumeEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerItemConsumeEvent().accept(event));
     }
 
     @EventHandler
     public void itemDamageEvent(PlayerItemDamageEvent event){
         ItemStack itemStack = event.getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerItemDamageEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerItemDamageEvent().accept(event));
     }
 
     @EventHandler
     public void pickupItemEvent(PlayerPickupItemEvent event){
         ItemStack itemStack = event.getItem().getItemStack();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPickupItemEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerPickupItemEvent().accept(event));
     }
 
     @EventHandler
     public void blockDispenseEvent(BlockDispenseEvent event){
         ItemStack itemStack = event.getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setBlockDispenseEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getBlockDispenseEvent().accept(event));
     }
 
     @EventHandler
     public void enchantItemEvent(EnchantItemEvent event){
         ItemStack itemStack = event.getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setEnchantItemEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getEnchantItemEvent().accept(event));
     }
 
 
     @EventHandler
     public void itemDespawnEvent(ItemDespawnEvent event){
         ItemStack itemStack = event.getEntity().getItemStack();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setItemDespawnEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getItemDespawnEvent().accept(event));
     }
 
     @EventHandler
     public void furnaceBurnEvent(FurnaceBurnEvent event){
         ItemStack itemStack = event.getFuel();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setFurnaceBurnEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getFurnaceBurnEvent().accept(event));
     }
 
     @EventHandler
     public void furnaceSmeltEvent(FurnaceSmeltEvent event){
         ItemStack itemStack = event.getResult();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setFurnaceSmeltEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getFurnaceSmeltEvent().accept(event));
     }
 
     @EventHandler
     public void playerItemHeldEvent(PlayerItemHeldEvent event){
         Inventory inventory = event.getPlayer().getInventory();
         if (isRItem(inventory.getItem(event.getPreviousSlot())) || isRItem(inventory.getItem(event.getNewSlot()))) {
-            RItemBuilder rItemBuilder = new RItemBuilder((isRItem(inventory.getItem(event.getPreviousSlot())) ? inventory.getItem(event.getPreviousSlot()) : inventory.getItem(event.getNewSlot())));
-            callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerItemHeldEvent(event));
+            call((isRItem(inventory.getItem(event.getPreviousSlot())) ? inventory.getItem(event.getPreviousSlot()) : inventory.getItem(event.getNewSlot())), rItemEvent -> rItemEvent.getPlayerItemHeldEvent().accept(event));
         }
     }
 
     @EventHandler
     public void playerFishEvent(PlayerFishEvent event){
         ItemStack itemStack = event.getPlayer().getItemInHand();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPlayerFishEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPlayerFishEvent().accept(event));
     }
 
     @EventHandler
     public void potionSplashEvent(PotionSplashEvent event){
         ItemStack itemStack = event.getPotion().getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPotionSplashEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPotionSplashEvent().accept(event));
     }
 
     @EventHandler
     public void prepareItemEnchantEvent(PrepareItemEnchantEvent event){
         ItemStack itemStack = event.getItem();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setPrepareItemEnchantEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getPrepareItemEnchantEvent().accept(event));
     }
 
     @EventHandler
     public void blockPlaceEvent(BlockPlaceEvent event){
         ItemStack itemStack = event.getItemInHand();
-        RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-        callListener(rItemBuilder, rItemEvent -> rItemEvent.setBlockPlaceEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getBlockPlaceEvent().accept(event));
     }
 
     @EventHandler
     public void blockBreakEvent(BlockBreakEvent event){
         ItemStack itemStack = event.getPlayer().getItemInHand();
-        if (itemStack != null) {
-            RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
-            callListener(rItemBuilder, rItemEvent -> rItemEvent.setBlockBreakEvent(event));
+        call(itemStack, rItemEvent -> rItemEvent.getBlockBreakEvent().accept(event));
+    }
+
+    @EventHandler
+    public void playerSwapHandItemsEvent(PlayerSwapHandItemsEvent event){
+        if (isRItem(event.getMainHandItem()) || isRItem(event.getOffHandItem())) {
+            ItemStack itemStack = (isRItem(event.getMainHandItem())? event.getMainHandItem(): event.getOffHandItem());
+            call(itemStack, rItemEvent -> rItemEvent.getPlayerSwapHandItemsEvent().accept(event));
         }
     }
 
-    private void callListener(RItemBuilder rItemBuilder, Consumer<RItemEvent> consumer){
-        if (isRItem(rItemBuilder)) {
-            try {
-                Class<RItemProvider> itemProvider = (Class<RItemProvider>) Class.forName(rItemBuilder.unsafe().getString("RItemProvider"));
-                consumer.accept(itemManager.getItemProvider(itemProvider));
-            }catch (Exception ignored){
-            }
+
+    private void call(ItemStack itemStack, Consumer<RItemEvent> consumer){
+        if (isRItem(itemStack)) {
+            RItemBuilder rItemBuilder = new RItemBuilder(itemStack);
+            RItemEvent rItemEvent = (RItemEvent) deserialize(rItemBuilder.unsafe().getByteArray("RItemEvent"));
+            consumer.accept(rItemEvent);
         }
     }
 
     private boolean isRItem(ItemStack itemStack){
-        return itemStack != null && new RItemBuilder(itemStack).unsafe().containsTag("RItemProvider");
+        return itemStack != null && itemStack.getType() != Material.AIR && new RItemBuilder(itemStack).unsafe().containsTag("RItemEvent");
     }
 
-
+    private Object deserialize(byte[] bytes) throws NullPointerException{
+        try{
+            ByteArrayInputStream bais =new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        throw new NullPointerException();
+    }
 
 }
