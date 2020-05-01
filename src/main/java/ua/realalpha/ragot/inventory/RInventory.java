@@ -8,20 +8,24 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
-    private Inventory inventory;
-    private PageController pageController;
-    private Map<Integer, Consumer<InventoryClickEvent>> mapShare;
+    private final Inventory inventory;
+    private final PageController pageController;
+    private final Map<Integer, Consumer<InventoryClickEvent>> mapShare;
+    private final List<RInventoryRunnable> runnableList;
 
     public RInventory(String name, int size) {
         this.inventory = Bukkit.createInventory(this, size, name);
         this.mapShare = new HashMap<>();
         this.pageController = new PageController(this);
+        this.runnableList = new ArrayList<>();
     }
 
 
@@ -29,6 +33,7 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         this.inventory = Bukkit.createInventory(this, inventoryType, name);
         this.mapShare = new HashMap<>();
         this.pageController = new PageController(this);
+        this.runnableList = new ArrayList<>();
     }
 
     public void addItem(ItemStack itemStack){
@@ -92,21 +97,22 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         return this.pageController;
     }
 
+    public void update(Runnable runnable, int delay){
+        this.runnableList.add(new RInventoryRunnable(runnable, delay));
+    }
+
     public int[] getBoard(int slotfrom, int lenth, int width){
-        int[] board = new int[lenth*width];
+        final int[] board = new int[lenth*width];
         int size = 0;
-        int adder = 0;
-        int multiplicateur = 1;
         int l = 0;
-        while (size != board.length){
-            board[size] = slotfrom + adder;
-            adder++;
-            size++;
+        int w = 0;
+        while (board.length != size) {
+            board[size] = slotfrom+w+l;
             l++;
+            size++;
             if(l == lenth){
-                adder = multiplicateur*9;
-                multiplicateur++;
                 l = 0;
+                w += 9;
             }
         }
         return board;
@@ -123,8 +129,8 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         return inventory;
     }
 
-     final Map<Integer, Consumer<InventoryClickEvent>> getMapShare() {
+    final Map<Integer, Consumer<InventoryClickEvent>> getMapShare() {
         return mapShare;
     }
-
+    final List<RInventoryRunnable> getRunnableList() { return runnableList; }
 }
