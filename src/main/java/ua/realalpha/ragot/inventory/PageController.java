@@ -39,7 +39,7 @@ public final class PageController {
     }
 
     public void nextPage(){
-        if (this.getPage() != getMaxPage()) {
+        if (this.getPage() != (getMaxPage()-1)) {
             this.page++;
             this.setPage(this.page);
         }
@@ -55,6 +55,7 @@ public final class PageController {
     private void setPage(int page){
         for (int i : this.board) {
             this.rInventory.getMapShare().remove(i);
+            this.rInventory.getInventory().clear(i);
         }
         List<ItemStack> itemStacks = this.map.get(page);
         for (int i = 0; i < itemStacks.size(); i++) {
@@ -62,23 +63,24 @@ public final class PageController {
         }
     }
 
-    protected void setUp(){
+    protected void setUp() throws NullPointerException{
+        if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         int page = 0;
-        int size = 1;
+        int size = 0;
         for (ItemStack itemStack : this.itemStacks) {
             if (size == board.length){
                 page++;
-                size=1;
+                size=0;
             }
             if (!this.map.containsKey(page)) this.map.put(page, new ArrayList<>());
             this.map.get(page).add(itemStack);
             size++;
         }
-        this.setPage(0);
+        if(this.map.size() != 0) this.setPage(0);
     }
 
     public final int getPage() {
-        return page+1;
+        return page;
     }
 
     public final int getMaxPage(){
