@@ -11,9 +11,11 @@ import ua.realalpha.ragot.Ragot;
 
 public class RInventoryHandler implements Listener {
 
-    private Ragot ragot;
-    public RInventoryHandler(Ragot ragot) {
+    private final Ragot ragot;
+    private final RInventoryManager rInventoryManager;
+    public RInventoryHandler(Ragot ragot, RInventoryManager rInventoryManager) {
         this.ragot = ragot;
+        this.rInventoryManager = rInventoryManager;
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -32,6 +34,7 @@ public class RInventoryHandler implements Listener {
     public void onOpen(InventoryOpenEvent event){
         if (event.getInventory() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
+            this.rInventoryManager.put(rInventory);
             rInventory.onOpen(event);
         }
     }
@@ -40,6 +43,7 @@ public class RInventoryHandler implements Listener {
     public void onClose(InventoryCloseEvent event){
         if (event.getInventory() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
+            this.rInventoryManager.remove(rInventory);
             Bukkit.getScheduler().runTask(ragot, ()-> rInventory.onClose(event));
         }
     }
