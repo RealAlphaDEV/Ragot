@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
     private final Inventory inventory;
+    private Player owner;
     private PageController pageController;
     private final Map<Integer, Consumer<InventoryClickEvent>> mapShare;
     private final List<RInventoryRunnable> runnableList;
@@ -120,7 +121,12 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
     }
 
     public void open(Player player){
+        this.owner = player;
         player.openInventory(this.inventory);
+    }
+
+    protected Player getOwner() {
+        return owner;
     }
 
     @Override
