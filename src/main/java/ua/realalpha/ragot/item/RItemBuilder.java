@@ -118,6 +118,13 @@ public class RItemBuilder implements Serializable {
         return this;
     }
 
+    public RItemBuilder addItemFlags(){
+        ItemMeta im = itemStack.getItemMeta();
+        im.addItemFlags(ItemFlag.values());
+        itemStack.setItemMeta(im);
+        return this;
+    }
+
     public RItemBuilder setInfinityDurability() {
         itemStack.setDurability(Short.MAX_VALUE);
         return this;
