@@ -65,13 +65,13 @@ public final class PageController {
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         int page = 0;
         int size = 0;
-        for (ItemStack itemStack : this.consumerMap.keySet()) {
+        for (Map.Entry<ItemStack, Consumer<InventoryClickEvent>> entry : this.consumerMap.entrySet()) {
             if (size == board.length){
                 page++;
                 size=0;
             }
             if (!this.map.containsKey(page)) this.map.put(page, new ArrayList<>());
-            this.map.get(page).add(itemStack);
+            this.map.get(page).add(entry.getKey());
             size++;
         }
         if(this.map.size() != 0) this.setPage(0);
