@@ -29,6 +29,9 @@ public final class PageController {
     public void setBoard(int slotfrom, int lenth, int width){
         this.board = this.rInventory.getBoard(slotfrom, lenth, width);
     }
+    public void setBoard(int... ints){
+        this.board = ints;
+    }
 
     public void setItemStacks(List<ItemStack> itemStacks) {
         this.itemStacks = itemStacks;
@@ -63,7 +66,7 @@ public final class PageController {
         }
     }
 
-    protected void setUp() throws NullPointerException{
+    protected void setUp() throws NumberFormatException{
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         int page = 0;
         int size = 0;
