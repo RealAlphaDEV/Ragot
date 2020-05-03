@@ -11,8 +11,7 @@ import java.util.function.Consumer;
 
 public final class PageController {
 
-    private List<ItemStack> itemStacks;
-    private Consumer<InventoryClickEvent> event;
+    private Map<ItemStack, Consumer<InventoryClickEvent>> consumerMap;
     private final RInventory rInventory;
     private final Map<Integer, List<ItemStack>> map;
     private int[] board;
@@ -20,9 +19,8 @@ public final class PageController {
 
     public PageController(RInventory rInventory) {
         this.rInventory = rInventory;
-        this.itemStacks = new ArrayList<>();
+        this.consumerMap = new HashMap<>();
         this.map = new HashMap<>();
-        this.event = e->{};
         this.page = 0;
     }
 
@@ -33,13 +31,10 @@ public final class PageController {
         this.board = ints;
     }
 
-    public void setItemStacks(List<ItemStack> itemStacks) {
-        this.itemStacks = itemStacks;
+    public void setItemStacks(Map<ItemStack, Consumer<InventoryClickEvent>> consumerMap) {
+        this.consumerMap = consumerMap;
     }
 
-    public void setInteractEvent(Consumer<InventoryClickEvent> event){
-        this.event = event;
-    }
 
     public void nextPage(){
         if (this.getPage() != (getMaxPage()-1)) {
@@ -62,7 +57,7 @@ public final class PageController {
         }
         List<ItemStack> itemStacks = this.map.get(page);
         for (int i = 0; i < itemStacks.size(); i++) {
-            this.rInventory.setItem(this.board[i], itemStacks.get(i), event);
+            this.rInventory.setItem(this.board[i], itemStacks.get(i), consumerMap.get(itemStacks.get(i)));
         }
     }
 
@@ -70,7 +65,7 @@ public final class PageController {
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         int page = 0;
         int size = 0;
-        for (ItemStack itemStack : this.itemStacks) {
+        for (ItemStack itemStack : this.consumerMap.keySet()) {
             if (size == board.length){
                 page++;
                 size=0;
