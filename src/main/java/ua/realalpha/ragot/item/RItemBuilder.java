@@ -3,22 +3,12 @@ package ua.realalpha.ragot.item;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDispenseEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.Potion;
+import ua.realalpha.ragot.version.Version;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
@@ -29,11 +19,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class RItemBuilder implements Serializable {
 
     private transient final ItemStack itemStack;
-    private final RItemEvent rItemEvent;
+    private final RItemData rItemData;
     public RItemBuilder(Material type, int amount) {
         this(new ItemStack(type, amount));
     }
@@ -44,7 +35,16 @@ public class RItemBuilder implements Serializable {
 
     public RItemBuilder(ItemStack stack)  {
         this.itemStack = stack;
-        this.rItemEvent = new RItemEvent();
+        this.rItemData = new RItemData();
+    }
+
+    public RItemBuilder(Potion potion, int amount){
+        this.itemStack = potion.toItemStack(amount);
+        this.rItemData = new RItemData();
+    }
+
+    public RItemBuilder(Potion potion){
+        this(potion, 1);
     }
 
     public RItemBuilder clone() {
@@ -54,6 +54,21 @@ public class RItemBuilder implements Serializable {
     public RItemBuilder(Material type) {
         this(type, 1);
     }
+
+    public RItemBuilder setBannerMeta(Consumer<BannerMeta> bannerMeta){
+        BannerMeta itemMeta = (BannerMeta) itemStack.getItemMeta();
+        bannerMeta.accept(itemMeta);
+        this.itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public RItemBuilder setPotionMeta(Consumer<PotionMeta> potionMeta){
+        PotionMeta itemMeta = (PotionMeta) itemStack.getItemMeta();
+        potionMeta.accept(itemMeta);
+        this.itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
 
     public RItemBuilder setName(String name) {
         ItemMeta im = itemStack.getItemMeta();
@@ -68,12 +83,9 @@ public class RItemBuilder implements Serializable {
     }
 
     public RItemBuilder setSkullOwner(String owner) {
-        try {
-            SkullMeta im = (SkullMeta) itemStack.getItemMeta();
-            im.setOwner(owner);
-            itemStack.setItemMeta(im);
-        } catch (ClassCastException expected) {
-        }
+        SkullMeta im = (SkullMeta) itemStack.getItemMeta();
+        im.setOwner(owner);
+        itemStack.setItemMeta(im);
         return this;
     }
 
@@ -165,22 +177,27 @@ public class RItemBuilder implements Serializable {
     }
 
     public RItemBuilder setColor(RItemColor rItemColor){
-        itemStack.setDurability(rItemColor.getData());
+        if (Version.getServerVersion().getVersion() < 13){
+            itemStack.setDurability(rItemColor.getData());
+            return this;
+        }
+        itemStack.setType(Material.valueOf(rItemColor.toString()+"_"+this.itemStack.getType().toString()));
         return this;
     }
 
     public RItemColor getColor(){
-        return RItemColor.getByData(itemStack.getDurability());
+        if (Version.getServerVersion().getVersion() < 13) return RItemColor.getByData(this.itemStack.getDurability());
+        String[] strings = this.itemStack.getType().toString().split("_");
+        return RItemColor.valueOf(strings[0]);
     }
 
     public RItemUnsafe unsafe(){
         return new RItemUnsafe(this);
     }
 
-
     public ItemStack build(){
         if (this.getClass().getSuperclass().equals(RItemBuilder.class)) {
-            return new RNBTItem(this.itemStack).setByteArray("RItemEvent", serialize(this.rItemEvent)).build();
+            return new RNBTItem(this.itemStack).setByteArray("RItemEvent", serialize(this.rItemData)).build();
         }
         return this.itemStack;
     }
@@ -220,42 +237,12 @@ public class RItemBuilder implements Serializable {
         return new byte[]{};
     }
 
-    protected void setPlayerInteractEvent(RConsumer<PlayerInteractEvent> event){ this.rItemEvent.setPlayerInteractEvent(event); }
-
-    protected void setPlayerDropEvent(RConsumer<PlayerDropItemEvent> event){ this.rItemEvent.setPlayerDropItemEvent(event); }
-
-    protected void setPlayerItemBreakEvent(RConsumer<PlayerItemBreakEvent> event){ this.rItemEvent.setPlayerItemBreakEvent(event); }
-
-    protected void setPlayerItemConsumeEvent(RConsumer<PlayerItemConsumeEvent> event){ this.rItemEvent.setPlayerItemConsumeEvent(event); }
-
-    protected void setPlayerItemDamageEvent(RConsumer<PlayerItemDamageEvent> event){ this.rItemEvent.setPlayerItemDamageEvent(event); }
-
-    protected void setPickupItemEvent(RConsumer<PlayerPickupItemEvent> event){ this.rItemEvent.setPlayerPickupItemEvent(event); }
-
-    protected void setInventoryClickEvent(RConsumer<InventoryClickEvent> event){ this.rItemEvent.setInventoryClickEvent(event); }
-
-    protected void setBlockDispenseEvent(RConsumer<BlockDispenseEvent> event){ this.rItemEvent.setBlockDispenseEvent(event); }
-
-    protected void setEnchantItemEvent(RConsumer<EnchantItemEvent> event){ this.rItemEvent.setEnchantItemEvent(event); }
-
-    protected void setPrepareItemEnchantEvent (RConsumer<PrepareItemEnchantEvent> event){ this.rItemEvent.setPrepareItemEnchantEvent(event); }
-
-    protected void setItemDespawnEvent(RConsumer<ItemDespawnEvent> event){ this.rItemEvent.setItemDespawnEvent(event); }
-
-    protected void setFurnaceBurnEvent(RConsumer<FurnaceBurnEvent> event){ this.rItemEvent.setFurnaceBurnEvent(event); }
-
-    protected void setFurnaceSmeltEvent(RConsumer<FurnaceSmeltEvent> event){ this.rItemEvent.setFurnaceSmeltEvent(event); }
-
-    protected void setPlayerItemHeldEvent(RConsumer<PlayerItemHeldEvent> event){ this.rItemEvent.setPlayerItemHeldEvent(event); }
-
-    protected void setPlayerFishEvent(RConsumer<PlayerFishEvent> event){ this.rItemEvent.setPlayerFishEvent(event); }
-
-    protected void setPotionSplashEvent(RConsumer<PotionSplashEvent> event){ this.rItemEvent.setPotionSplashEvent(event); }
-
-    protected void setBlockBreakEvent(RConsumer<BlockBreakEvent> event){ this.rItemEvent.setBlockBreakEvent(event); }
-
-    protected void setBlockPlaceEvent(RConsumer<BlockPlaceEvent> event){ this.rItemEvent.setBlockPlaceEvent(event); }
-
-    protected void setPlayerSwapHandItemsEvent(RConsumer<PlayerSwapHandItemsEvent> event){ this.rItemEvent.setPlayerSwapHandItemsEvent(event); }
+    protected final void setEvent(RItemEvent rItemEvent, RConsumer<? extends Event> rConsumer){
+        try {
+            this.rItemData.put(rItemEvent.getClazz(), rConsumer);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
