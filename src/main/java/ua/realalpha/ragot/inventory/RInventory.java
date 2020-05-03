@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
     private final Inventory inventory;
-    private final PageController pageController;
+    private PageController pageController;
     private final Map<Integer, Consumer<InventoryClickEvent>> mapShare;
     private final List<RInventoryRunnable> runnableList;
 
@@ -51,18 +51,18 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         this.inventory.setItem(slot, itemStack);
     }
 
-    public void setItem(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> consumer){
+    public void setItem(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> event){
         this.inventory.setItem(slot, itemStack);
-        this.mapShare.put(slot, consumer);
+        this.mapShare.put(slot, event);
     }
 
     public void setItem(int[] slot, ItemStack itemStack){
         this.setItem(slot, itemStack, null);
     }
 
-    public void setItem(int[] slot, ItemStack itemStack, Consumer<InventoryClickEvent> consumer){
+    public void setItem(int[] slot, ItemStack itemStack, Consumer<InventoryClickEvent> event){
         for (int i : slot) {
-            this.setItem(i, itemStack, consumer);
+            this.setItem(i, itemStack, event);
         }
     }
 
@@ -70,10 +70,10 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         setHorizontalLine(from, to, itemStack, null);
     }
 
-    public void setHorizontalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
+    public void setHorizontalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> event) {
         for (int i = from; i <= to; i++) {
             inventory.setItem(i, itemStack);
-            if(consumer != null) this.mapShare.put(i, consumer);
+            if(event != null) this.mapShare.put(i, event);
         }
     }
 
@@ -81,14 +81,15 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         setVerticalLine(from, to, itemStack, null);
     }
 
-    public void setVerticalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
+    public void setVerticalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> event) {
         for (int i = from; i <= to; i += 9) {
             inventory.setItem(i, itemStack);
-            if(consumer != null) this.mapShare.put(i, consumer);
+            if(event != null) this.mapShare.put(i, event);
         }
     }
 
     public void setPageController(Consumer<PageController> pageController){
+        this.pageController = new PageController(this);
         pageController.accept(this.pageController);
         this.pageController.setUp();
     }
@@ -118,11 +119,9 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         return board;
     }
 
-
     public void open(Player player){
         player.openInventory(this.inventory);
     }
-
 
     @Override
     public Inventory getInventory() {

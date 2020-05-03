@@ -70,7 +70,7 @@ public class RItemUnsafe {
         return this;
     }
 
-    public RItemUnsafe injectEvent(Class<? extends RItemEvent> aClass){
+    public RItemUnsafe injectEvent(Class<? extends RItemData> aClass){
         this.setString("RItemProvider", aClass.getName()).toItemBuilder();
         return this;
     }

@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ua.realalpha.ragot.inventory.RInventoryHandler;
 import ua.realalpha.ragot.inventory.RInventoryManager;
 import ua.realalpha.ragot.inventory.RInventoryTask;
-import ua.realalpha.ragot.item.RItemHandler;
+import ua.realalpha.ragot.item.RItemManager;
 
 public class Ragot extends JavaPlugin {
 
@@ -16,10 +16,9 @@ public class Ragot extends JavaPlugin {
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new RInventoryHandler(this, rInventoryManager), this);
-        pluginManager.registerEvents(new RItemHandler(), this);
 
+        new RItemManager(this).registerListeners();
         new RInventoryTask(rInventoryManager).runTaskTimer(this, 0, 1);
-
 
         super.onEnable();
     }
