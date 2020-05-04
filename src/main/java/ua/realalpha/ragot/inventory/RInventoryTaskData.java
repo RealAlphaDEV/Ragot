@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class RInventoryData {
+public class RInventoryTaskData {
 
     private final Map<UUID, Integer> runnableMap;
-    public RInventoryData() {
+    public RInventoryTaskData() {
         this.runnableMap = new HashMap<>();
     }
 
