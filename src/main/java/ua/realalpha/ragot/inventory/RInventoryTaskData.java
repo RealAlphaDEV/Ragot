@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class RInventoryTaskData {
+public final class RInventoryTaskData {
 
     private final Map<UUID, Integer> runnableMap;
     public RInventoryTaskData() {
