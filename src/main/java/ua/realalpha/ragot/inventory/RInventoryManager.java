@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class RInventoryManager {
+public final class RInventoryManager {
 
     private final Map<RInventory, RInventoryTaskData> map;
 
