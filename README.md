@@ -1,3 +1,7 @@
+# Status
+![wiki](https://img.shields.io/static/v1?label=wiki&message=available&color=green)
+
+
 # Ragot
 Ragot is an API for the minecraft plugin in order to help or accelerate the development of the plugin thanks to the different tools available.
 To use it refer you to the [documentation](https://github.com/RealAlphaDEV/Ragot/wiki).
