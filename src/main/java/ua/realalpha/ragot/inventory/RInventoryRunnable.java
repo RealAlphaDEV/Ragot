@@ -2,7 +2,7 @@ package ua.realalpha.ragot.inventory;
 
 import java.util.UUID;
 
-public class RInventoryRunnable {
+public final class RInventoryRunnable {
 
     private final Runnable runnable;
     private final int delay;

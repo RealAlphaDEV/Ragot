@@ -4,19 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class RInventoryManager {
+public final class RInventoryManager {
 
-    private final Map<RInventory, RInventoryData> map;
+    private final Map<RInventory, RInventoryTaskData> map;
 
     public RInventoryManager() {
         this.map = new HashMap<>();
     }
 
-    public RInventoryData put(RInventory rInventory){
-        return this.map.put(rInventory, new RInventoryData());
+    public RInventoryTaskData put(RInventory rInventory){
+        return this.map.put(rInventory, new RInventoryTaskData());
     }
 
-    public RInventoryData get(RInventory rInventory){
+    public RInventoryTaskData get(RInventory rInventory){
         if (this.map.containsKey(rInventory)) return this.map.get(rInventory);
         return put(rInventory);
     }

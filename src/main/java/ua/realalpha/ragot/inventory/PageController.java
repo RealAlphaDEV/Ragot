@@ -1,25 +1,21 @@
 package ua.realalpha.ragot.inventory;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public final class PageController {
 
-    private Map<ItemStack, Consumer<InventoryClickEvent>> consumerMap;
+    private List<RInventoryData> list;
     private final RInventory rInventory;
-    private final Map<Integer, List<ItemStack>> map;
+    private final Map<Integer, List<RInventoryData>> map;
     private int[] board;
     private int page;
 
     public PageController(RInventory rInventory) {
         this.rInventory = rInventory;
-        this.consumerMap = new HashMap<>();
+        this.list = new ArrayList<>();
         this.map = new HashMap<>();
         this.page = 0;
     }
@@ -31,8 +27,8 @@ public final class PageController {
         this.board = ints;
     }
 
-    public void setItemStacks(Map<ItemStack, Consumer<InventoryClickEvent>> consumerMap) {
-        this.consumerMap = consumerMap;
+    public void setItemStacks(List<RInventoryData> list) {
+        this.list = list;
     }
 
 
@@ -55,9 +51,10 @@ public final class PageController {
             this.rInventory.getMapShare().remove(i);
             this.rInventory.getInventory().clear(i);
         }
-        List<ItemStack> itemStacks = this.map.get(page);
-        for (int i = 0; i < itemStacks.size(); i++) {
-            this.rInventory.setItem(this.board[i], itemStacks.get(i), consumerMap.get(itemStacks.get(i)));
+        List<RInventoryData> rInventoryData = this.map.get(page);
+        for (int i = 0; i < rInventoryData.size(); i++) {
+            RInventoryData data = rInventoryData.get(i);
+            this.rInventory.setItem(this.board[i], data.getItemStack(), data.getConsumer());
         }
     }
 
@@ -65,13 +62,13 @@ public final class PageController {
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         int page = 0;
         int size = 0;
-        for (ItemStack itemStack : this.consumerMap.keySet()) {
+        for (RInventoryData rInventoryData : this.list) {
             if (size == board.length){
                 page++;
                 size=0;
             }
             if (!this.map.containsKey(page)) this.map.put(page, new ArrayList<>());
-            this.map.get(page).add(itemStack);
+            this.map.get(page).add(rInventoryData);
             size++;
         }
         if(this.map.size() != 0) this.setPage(0);

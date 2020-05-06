@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import ua.realalpha.ragot.Ragot;
 
-public class RInventoryHandler implements Listener {
+public final class RInventoryHandler implements Listener {
 
     private final Ragot ragot;
     private final RInventoryManager rInventoryManager;

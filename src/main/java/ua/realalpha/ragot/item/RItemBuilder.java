@@ -198,11 +198,11 @@ public class RItemBuilder implements Serializable {
         return RItemColor.valueOf(strings[0]);
     }
 
-    public RItemUnsafe unsafe(){
+    public final RItemUnsafe unsafe(){
         return new RItemUnsafe(this);
     }
 
-    public ItemStack build(){
+    public final ItemStack build(){
         if (this.getClass().getSuperclass().equals(RItemBuilder.class)) {
             return new RNBTItem(this.itemStack).setByteArray("RItemEvent", serialize(this.rItemData)).build();
         }

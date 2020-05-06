@@ -3,6 +3,8 @@ package ua.realalpha.ragot.inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -14,15 +16,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public abstract class RInventory implements InventoryHolder, RInventoryEvent {
+public abstract class RInventory implements InventoryHolder {
 
     private final Inventory inventory;
-    private Player owner;
     private PageController pageController;
+    private final Player owner;
     private final Map<Integer, Consumer<InventoryClickEvent>> mapShare;
     private final List<RInventoryRunnable> runnableList;
 
-    public RInventory(String name, int size) {
+    public RInventory(Player owner, String name, int size) {
+        this.owner = owner;
         this.inventory = Bukkit.createInventory(this, size, name);
         this.mapShare = new HashMap<>();
         this.pageController = new PageController(this);
@@ -30,7 +33,8 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
     }
 
 
-    public RInventory(String name, InventoryType inventoryType) {
+    public RInventory(Player owner, String name, InventoryType inventoryType) {
+        this.owner = owner;
         this.inventory = Bukkit.createInventory(this, inventoryType, name);
         this.mapShare = new HashMap<>();
         this.pageController = new PageController(this);
@@ -49,12 +53,13 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
 
     public void setItem(int slot, ItemStack itemStack){
+        this.mapShare.remove(slot);
         this.inventory.setItem(slot, itemStack);
     }
 
     public void setItem(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> event){
-        this.inventory.setItem(slot, itemStack);
-        this.mapShare.put(slot, event);
+        this.setItem(slot, itemStack);
+        if (event != null) this.mapShare.put(slot, event);
     }
 
     public void setItem(int[] slot, ItemStack itemStack){
@@ -73,19 +78,17 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
 
     public void setHorizontalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> event) {
         for (int i = from; i <= to; i++) {
-            inventory.setItem(i, itemStack);
-            if(event != null) this.mapShare.put(i, event);
+            this.setItem(i, itemStack, event);
         }
     }
 
     public void setVerticalLine(int from, int to, ItemStack itemStack) {
-        setVerticalLine(from, to, itemStack, null);
+        this.setVerticalLine(from, to, itemStack, null);
     }
 
     public void setVerticalLine(int from, int to, ItemStack itemStack, Consumer<InventoryClickEvent> event) {
         for (int i = from; i <= to; i += 9) {
-            inventory.setItem(i, itemStack);
-            if(event != null) this.mapShare.put(i, event);
+            this.setItem(i, itemStack, event);
         }
     }
 
@@ -120,14 +123,13 @@ public abstract class RInventory implements InventoryHolder, RInventoryEvent {
         return board;
     }
 
-    public void open(Player player){
-        this.owner = player;
-        player.openInventory(this.inventory);
+    public void open(){
+        this.owner.openInventory(this.inventory);
     }
 
-    protected Player getOwner() {
-        return owner;
-    }
+    protected void onClose(InventoryCloseEvent event){ }
+    protected void onOpen(InventoryOpenEvent event){ }
+
 
     @Override
     public Inventory getInventory() {

@@ -1,3 +1,11 @@
+# Status
+[![wiki](https://img.shields.io/static/v1?label=wiki&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki)
+[![ritem](https://img.shields.io/static/v1?label=ritem&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RItem)
+[![rinventory](https://img.shields.io/static/v1?label=rinventory&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RInventory)
+[![rtag](https://img.shields.io/github/v/tag/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/releases)
+[![license](https://img.shields.io/github/license/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/blob/master/LICENSE)
+
+
 # Ragot
 Ragot is an API for the minecraft plugin in order to help or accelerate the development of the plugin thanks to the different tools available.
 To use it refer you to the [documentation](https://github.com/RealAlphaDEV/Ragot/wiki).
@@ -9,9 +17,9 @@ Server Version | Support
 1.10           |   ✔
 1.11           |   ✔
 1.12           |   ✔
-1.13           |   ✘
-1.14           |   ✘
-1.15           |   ✘
+1.13           |   ⚠
+1.14           |   ⚠
+1.15           |   ⚠
 
 ### Summary
 * [Installation](#Installation)

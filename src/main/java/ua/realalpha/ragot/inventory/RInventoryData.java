@@ -1,18 +1,25 @@
 package ua.realalpha.ragot.inventory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
-public class RInventoryData {
+import java.util.function.Consumer;
 
-    private final Map<UUID, Integer> runnableMap;
-    public RInventoryData() {
-        this.runnableMap = new HashMap<>();
+public final class RInventoryData {
+
+    private final ItemStack itemStack;
+    private final Consumer<InventoryClickEvent> consumer;
+
+    public RInventoryData(ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
+        this.itemStack = itemStack;
+        this.consumer = consumer;
     }
 
-    public Map<UUID, Integer> getRunnableMap() {
-        return runnableMap;
+    public ItemStack getItemStack() {
+        return itemStack;
     }
 
+    public Consumer<InventoryClickEvent> getConsumer() {
+        return consumer;
+    }
 }

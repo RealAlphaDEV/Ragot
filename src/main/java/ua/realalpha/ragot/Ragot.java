@@ -20,7 +20,6 @@ public class Ragot extends JavaPlugin {
         new RItemManager(this).registerListeners();
         new RInventoryTask(rInventoryManager).runTaskTimer(this, 0, 1);
 
-
         super.onEnable();
     }
 
