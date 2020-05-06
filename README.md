@@ -1,5 +1,7 @@
 # Status
-![wiki](https://img.shields.io/static/v1?label=wiki&message=available&color=green)
+[![wiki](https://img.shields.io/static/v1?label=wiki&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki)
+[![ritem](https://img.shields.io/static/v1?label=ritem&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RItem)
+[![rinventory](https://img.shields.io/static/v1?label=rinventory&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RInventory)
 
 
 # Ragot
