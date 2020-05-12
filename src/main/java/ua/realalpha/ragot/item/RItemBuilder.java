@@ -1,13 +1,16 @@
 package ua.realalpha.ragot.item;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.Potion;
+import ua.realalpha.ragot.utils.Reflections;
 import ua.realalpha.ragot.version.Version;
 
 import java.io.ByteArrayOutputStream;
@@ -82,9 +85,14 @@ public class RItemBuilder implements Serializable {
         return im.getDisplayName();
     }
 
-    public RItemBuilder setSkullOwner(String owner) {
+    public RItemBuilder setSkullOwner(UUID uuid) {
         SkullMeta im = (SkullMeta) itemStack.getItemMeta();
-        im.setOwner(owner);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        if (Version.getServerVersion().getVersion() < 13) {
+            im.setOwner(offlinePlayer.getName());
+        }else {
+            Reflections.callMethod(im, "setOwningPlayer", offlinePlayer);
+        }
         itemStack.setItemMeta(im);
         return this;
     }
