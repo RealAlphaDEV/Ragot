@@ -3,6 +3,7 @@
 [![ritem](https://img.shields.io/static/v1?label=ritem&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RItem)
 [![rinventory](https://img.shields.io/static/v1?label=rinventory&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RInventory)
 [![rtag](https://img.shields.io/github/v/tag/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/releases)
+[![release](https://img.shields.io/github/v/release/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/packages)
 [![license](https://img.shields.io/github/license/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/blob/master/LICENSE)
 
 
@@ -21,12 +22,25 @@ Server Version | Support
 1.14           |   ✔
 1.15           |   ✔
 
+
 ### Summary
 * [Installation](#Installation)
 * [Contributor](#Contributor)
 * [License](#License)
 
 # Installation
+
+```xml
+<dependency>
+  <groupId>ua.realalpha</groupId>
+  <artifactId>Ragot</artifactId>
+  <version>VERSION</version>
+</dependency>
+```
+
+[And configure maven for github packages](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages)
+
+
 * Download the latest version of Ragot [here](https://github.com/RealAlphaDEV/Ragot/releases).
 * Add it on your server.
 * Add it in your dependencies on your idea and in your plugin.yml.
