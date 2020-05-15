@@ -93,7 +93,6 @@ public abstract class RInventory implements InventoryHolder {
     }
 
     public void setPageController(Consumer<PageController> pageController){
-        this.pageController = new PageController(this);
         pageController.accept(this.pageController);
         this.pageController.setUp();
     }
