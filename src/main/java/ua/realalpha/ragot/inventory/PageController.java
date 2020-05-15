@@ -18,6 +18,7 @@ public final class PageController {
         this.list = new ArrayList<>();
         this.map = new HashMap<>();
         this.page = 0;
+        this.board = new int[]{};
     }
 
     public void setBoard(int slotfrom, int lenth, int width){
@@ -60,6 +61,7 @@ public final class PageController {
 
     protected void setUp() throws NumberFormatException{
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
+        this.map.clear();
         int page = 0;
         int size = 0;
         for (RInventoryData rInventoryData : this.list) {
@@ -81,5 +83,9 @@ public final class PageController {
     public final int getMaxPage(){
         return this.map.size();
     }
+
+    public final boolean isFirst(){ return this.page == 0; }
+
+    public final boolean isLast(){ return this.page == (getMaxPage()-1); }
 
 }
