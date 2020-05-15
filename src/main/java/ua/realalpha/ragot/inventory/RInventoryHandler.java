@@ -32,7 +32,7 @@ public final class RInventoryHandler implements Listener {
 
     @EventHandler
     public void onOpen(InventoryOpenEvent event){
-        if (event.getInventory() != null && event.getInventory().getHolder() instanceof RInventory) {
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
             this.rInventoryManager.put(rInventory);
             rInventory.onOpen(event);
@@ -41,7 +41,7 @@ public final class RInventoryHandler implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event){
-        if (event.getInventory() != null && event.getInventory().getHolder() instanceof RInventory) {
+        if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
             this.rInventoryManager.remove(rInventory);
             Bukkit.getScheduler().runTask(ragot, ()-> rInventory.onClose(event));
