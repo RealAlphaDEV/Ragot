@@ -34,6 +34,7 @@ public final class RInventoryHandler implements Listener {
     public void onOpen(InventoryOpenEvent event){
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
+            rInventory.getRunnableList().forEach(rInventoryRunnable -> rInventoryRunnable.getRunnable().run());
             this.rInventoryManager.put(rInventory);
             rInventory.onOpen(event);
         }
