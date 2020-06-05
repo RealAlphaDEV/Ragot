@@ -7,14 +7,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import ua.realalpha.ragot.Ragot;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RInventoryHandler implements Listener {
 
-    private final Ragot ragot;
+    private final JavaPlugin javaPlugin;
     private final RInventoryManager rInventoryManager;
-    public RInventoryHandler(Ragot ragot, RInventoryManager rInventoryManager) {
-        this.ragot = ragot;
+    public RInventoryHandler(JavaPlugin javaPlugin, RInventoryManager rInventoryManager) {
+        this.javaPlugin = javaPlugin;
         this.rInventoryManager = rInventoryManager;
     }
 
@@ -45,7 +45,7 @@ public final class RInventoryHandler implements Listener {
         if (event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof RInventory) {
             RInventory rInventory = (RInventory) event.getInventory().getHolder();
             this.rInventoryManager.remove(rInventory);
-            Bukkit.getScheduler().runTask(ragot, ()-> rInventory.onClose(event));
+            Bukkit.getScheduler().runTask(javaPlugin, ()-> rInventory.onClose(event));
         }
     }
 
