@@ -3,7 +3,6 @@
 [![ritem](https://img.shields.io/static/v1?label=ritem&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RItem)
 [![rinventory](https://img.shields.io/static/v1?label=rinventory&message=available&color=succes)](https://github.com/RealAlphaDEV/Ragot/wiki/RInventory)
 [![rtag](https://img.shields.io/github/v/tag/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/releases)
-[![release](https://img.shields.io/github/v/release/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/packages)
 [![license](https://img.shields.io/github/license/RealAlphaDEV/Ragot)](https://github.com/RealAlphaDEV/Ragot/blob/master/LICENSE)
 
 

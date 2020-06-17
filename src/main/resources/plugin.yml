@@ -1,4 +1,4 @@
-name: ${project.artifactId}
+name: ${project.name}
 version: ${project.version}
 author: RealAlphaDEV
 main: ua.realalpha.ragot.Ragot
