@@ -7,15 +7,20 @@ import ua.realalpha.ragot.command.RCommandRequest;
 
 public class CraftRCommandRequest implements RCommandRequest {
 
+    private final CommandSender commandSender;
+
+    public CraftRCommandRequest(CommandSender commandSender) {
+        this.commandSender = commandSender;
+    }
 
     @Override
     public CommandSender asConsole() {
-        return null;
+        return commandSender;
     }
 
     @Override
     public Player asPlayer() {
-        return null;
+        return (Player) commandSender;
     }
 
     @Override

@@ -2,13 +2,16 @@ package ua.realalpha.ragot.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import ua.realalpha.ragot.command.data.RCommandData;
 
 import java.util.List;
 
 public class RCommandHandler extends Command {
 
-    protected RCommandHandler(String name) {
-        super(name);
+    private final RCommandManager rCommandManager;
+    public RCommandHandler(RCommandData rCommandData, RCommandManager rCommandManager) {
+        super(rCommandData.getCommand().get(0), rCommandData.getDescription(), rCommandData.getUsage(), rCommandData.getAliases());
+        this.rCommandManager = rCommandManager;
     }
 
     @Override

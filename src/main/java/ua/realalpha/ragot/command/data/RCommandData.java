@@ -6,34 +6,31 @@ import ua.realalpha.ragot.command.annotation.RCommand;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class RCommandData {
+public final class RCommandData implements Cloneable {
 
-    private final String command;
-    private List<String> aliases;
-    private String description;
-    private RExecutorType rExecutorType;
-    private Method method;
-    private RCommandListener rCommandListener;
-    private final Map<String, RSubCommandData> subCommandDataMap = new HashMap<>();
+    private final List<String> command;
+    private final List<String> aliases;
+    private final String description;
+    private final String usage;
+    private final List<String> args;
+    private final RExecutorType rExecutorType;
+    private final Method method;
+    private final RCommandListener rCommandListener;
 
-    public RCommandData(String command) {
-        this.command = command;
-    }
-
-    public RCommandData setUp(RCommand rCommand, Method method, RCommandListener rCommandListener){
+    public RCommandData(RCommand rCommand, Method method, RCommandListener rCommandListener) {
+        this.command = Arrays.asList(rCommand.command());
         this.aliases = Arrays.asList(rCommand.aliases());
         this.description = rCommand.description();
+        this.usage = rCommand.usage();
+        this.args = Arrays.asList(rCommand.args());
         this.rExecutorType = rCommand.type();
         this.method = method;
         this.rCommandListener = rCommandListener;
-        return this;
     }
 
-    public String getCommand() {
+    public List<String> getCommand() {
         return command;
     }
 
@@ -43,6 +40,14 @@ public class RCommandData {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getUsage() {
+        return usage;
+    }
+
+    public List<String> getArgs() {
+        return args;
     }
 
     public RExecutorType getRExecutorType() {
@@ -57,7 +62,13 @@ public class RCommandData {
         return rCommandListener;
     }
 
-    public void addSubCommand(RSubCommandData rSubCommandData){
-        this.subCommandDataMap.put(rSubCommandData.getUnderCommands().toString(), rSubCommandData);
+    public RCommandData clone()  {
+        try {
+            return (RCommandData) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 }

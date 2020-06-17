@@ -17,6 +17,7 @@ public final class Ragot extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new RInventoryHandler(this, rInventoryManager), this);
 
+
         new RItemManager(this).registerListeners();
         new RInventoryTask(rInventoryManager).runTaskTimer(this, 0, 1);
 

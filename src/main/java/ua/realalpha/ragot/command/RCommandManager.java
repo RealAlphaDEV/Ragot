@@ -1,32 +1,30 @@
 package ua.realalpha.ragot.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import ua.realalpha.ragot.command.annotation.RCommand;
-import ua.realalpha.ragot.command.annotation.RSubCommand;
+import ua.realalpha.ragot.command.craft.CraftRCommandRequest;
 import ua.realalpha.ragot.command.data.RCommandData;
-import ua.realalpha.ragot.command.data.RSubCommandData;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class RCommandManager {
 
-    private final Map<String, RCommandData> rCommandDataMap = new HashMap<>();
+    private final List<RCommandData> rCommandDataList = new ArrayList<>();
 
     public void registerListener(RCommandListener rCommandListener){
         this.getCommandsByAnnotation(rCommandListener, RCommand.class).forEach(method -> {
             RCommand rCommand = method.getAnnotation(RCommand.class);
-            if (!this.rCommandDataMap.containsKey(rCommand.command())) this.rCommandDataMap.put(rCommand.command(), new RCommandData(rCommand.command()).setUp(rCommand, method, rCommandListener));
-            else this.rCommandDataMap.get(rCommand.command()).setUp(rCommand, method, rCommandListener);
-        });
-
-        this.getCommandsByAnnotation(rCommandListener, RSubCommand.class).forEach(method -> {
-            RSubCommand rSubCommand = method.getAnnotation(RSubCommand.class);
-            if (!this.rCommandDataMap.containsKey(rSubCommand.command())) this.rCommandDataMap.put(rSubCommand.command(), new RCommandData(rSubCommand.command()));
-            this.rCommandDataMap.get(rSubCommand.command()).addSubCommand(new RSubCommandData(rSubCommand, method, rCommandListener));
+            RCommandData rCommandData = new RCommandData(rCommand, method, rCommandListener);
+            this.rCommandDataList.add(rCommandData);
+            //if (rCommandData.getCommand().size() == 1) this.registerCommands(rCommandData);
         });
     }
 
@@ -43,9 +41,41 @@ public class RCommandManager {
         return list;
     }
 
-    private void callCommand(String command, String[] args){
-        if (!this.rCommandDataMap.containsKey(command)) return;
-        this.rCommandDataMap.get(command);
+    private void registerCommands(RCommandData rCommandData) {
+        try {
+            Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            field.setAccessible(true);
+            CommandMap commandMap = (CommandMap) field.get(Bukkit.getServer());
+            commandMap.register(rCommandData.getCommand().get(0), new RCommandHandler(rCommandData, this));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<RCommandData> getSubCommandOfCommand(String command){
+        final List<RCommandData> list = new ArrayList<>();
+        for (RCommandData rCommandData : this.rCommandDataList) {
+            if (rCommandData.getCommand().size() != 1 && rCommandData.getCommand().get(0).equalsIgnoreCase(command)) list.add(rCommandData);
+        }
+        return list;
+    }
+
+    private RCommandData getRCommandData(String command){
+        for (RCommandData rCommandData : this.rCommandDataList) {
+            if (rCommandData.getCommand().get(0).equalsIgnoreCase(command)) return rCommandData;
+        }
+        throw new NullPointerException();
+    }
+
+    public void handleRCommand(CommandSender commandSender, String command, String[] args){
+        try {
+            RCommandData rCommandData = this.getRCommandData(command);
+            RCommandFetcher rCommandFetcher = new RCommandFetcher(rCommandData);
+            RCommandData rCommand = rCommandFetcher.getRCommand(this.getSubCommandOfCommand(command), Arrays.asList(args));
+            rCommand.getMethod().invoke(rCommand.getRCommandListener(), new CraftRCommandRequest(commandSender));
+        }catch (NullPointerException | IllegalAccessException | InvocationTargetException ignored){
+
+        }
     }
 
 }

@@ -11,9 +11,11 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface RCommand {
 
-    String command();
+    String[] command();
     String[] aliases() default {};
     String description();
+    String usage();
+    String[] args() default {};
     RExecutorType type();
 
 }
