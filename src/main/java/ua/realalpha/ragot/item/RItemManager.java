@@ -19,7 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import ua.realalpha.ragot.Ragot;
+import org.bukkit.plugin.java.JavaPlugin;
 import ua.realalpha.ragot.version.Version;
 
 import java.io.ByteArrayInputStream;
@@ -31,9 +31,9 @@ import java.util.logging.Level;
 public final class RItemManager {
 
     private final List<Listener> list;
-    private final Ragot ragot;
-    public RItemManager(Ragot ragot) {
-        this.ragot = ragot;
+    private final JavaPlugin javaPlugin;
+    public RItemManager(JavaPlugin javaPlugin) {
+        this.javaPlugin = javaPlugin;
         this.list = new ArrayList<>();
         Version version = Version.getServerVersion();
 
@@ -184,8 +184,8 @@ public final class RItemManager {
 
     public void registerListeners(){
         this.list.forEach(listener -> {
-            ragot.getLogger().log(Level.INFO, "The "+getEvent(listener).getSimpleName()+" event was recorded");
-            Bukkit.getPluginManager().registerEvents(listener, ragot);
+            javaPlugin.getLogger().log(Level.INFO, "The "+getEvent(listener).getSimpleName()+" event was recorded");
+            Bukkit.getPluginManager().registerEvents(listener, javaPlugin);
         });
     }
 
