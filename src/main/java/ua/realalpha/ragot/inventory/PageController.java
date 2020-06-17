@@ -34,14 +34,14 @@ public final class PageController {
 
 
     public void nextPage(){
-        if (this.getPage() != (getMaxPage()-1)) {
+        if (!isLast()) {
             this.page++;
             this.setPage(this.page);
         }
     }
 
     public void previousPage(){
-        if(this.page > 0) {
+        if(!isFirst()) {
             this.page--;
             this.setPage(this.page);
         }
@@ -62,6 +62,7 @@ public final class PageController {
     protected void setUp() throws NumberFormatException{
         if (this.board.length == 0)  throw new NumberFormatException("The board is empty");
         this.map.clear();
+        this.page = 0;
         int page = 0;
         int size = 0;
         for (RInventoryData rInventoryData : this.list) {
@@ -86,6 +87,6 @@ public final class PageController {
 
     public final boolean isFirst(){ return this.page == 0; }
 
-    public final boolean isLast(){ return this.page == (getMaxPage()-1); }
+    public final boolean isLast(){ return (getPage()+1) == (getMaxPage() == 0? 1 : getMaxPage()); }
 
 }
