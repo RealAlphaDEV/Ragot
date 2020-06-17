@@ -1,4 +1,4 @@
-name: Ragot
-version: 1.0.0
+name: ${project.artifactId}
+version: ${project.version}
 author: RealAlphaDEV
 main: ua.realalpha.ragot.Ragot
