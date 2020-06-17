@@ -32,7 +32,7 @@ Server Version | Support
 ```xml
 <dependency>
   <groupId>ua.realalpha</groupId>
-  <artifactId>Ragot</artifactId>
+  <artifactId>ragot</artifactId>
   <version>VERSION</version>
 </dependency>
 ```
