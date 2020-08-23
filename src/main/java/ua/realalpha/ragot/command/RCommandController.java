@@ -2,15 +2,15 @@ package ua.realalpha.ragot.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import ua.realalpha.ragot.command.data.RCommandData;
+import ua.realalpha.ragot.command.builder.RParentCommand;
 
 import java.util.List;
 
-public class RCommandHandler extends Command {
+public class RCommandListener extends Command {
 
     private final RCommandManager rCommandManager;
-    public RCommandHandler(RCommandData rCommandData, RCommandManager rCommandManager) {
-        super(rCommandData.getCommand().get(0), rCommandData.getDescription(), rCommandData.getUsage(), rCommandData.getAliases());
+    public RCommandListener(RParentCommand rCommand, RCommandManager rCommandManager) {
+        super(rCommand.getCommand(), rCommand.getDescription(), rCommand.getUsage(), rCommand.getAliases());
         this.rCommandManager = rCommandManager;
     }
 
