@@ -1,24 +1,18 @@
 package ua.realalpha.ragot.command.entity;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface CommandResult {
+public interface RCommandResult {
 
-    CommandSender asConsole();
+    <T extends CommandSender> T asSender(Class<T> tClass);
 
-    Optional<Player> asPlayer();
-
-    RArgument getRArgument();
+    RTweakArgument getRTweakArgument();
 
     String[] getArgs();
 
-    RGroupCommand getRGroupCommand();
-
-
-
+    List<RCommand> getTopRsCommand();
 
 
 }
