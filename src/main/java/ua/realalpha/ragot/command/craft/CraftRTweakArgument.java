@@ -1,13 +1,13 @@
 package ua.realalpha.ragot.command.craft;
 
-import ua.realalpha.ragot.command.entity.RArgument;
+import ua.realalpha.ragot.command.entity.RTweakArgument;
 
 import java.util.Optional;
 
-public class CraftRArgument implements RArgument {
+public class CraftRTweakArgument implements RTweakArgument {
 
     private final String[] args;
-    public CraftRArgument(String[] args) {
+    public CraftRTweakArgument(String[] args) {
         this.args = args;
     }
 
