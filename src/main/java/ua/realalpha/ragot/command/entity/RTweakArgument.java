@@ -2,7 +2,7 @@ package ua.realalpha.ragot.command.entity;
 
 import java.util.Optional;
 
-public interface RArgument {
+public interface RTweakArgument {
 
     Optional<String> asString(int i);
 
