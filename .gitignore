@@ -17,4 +17,5 @@
 # Maven
 log/
 target/
+src/test
 dependency-reduced-pom.xml
