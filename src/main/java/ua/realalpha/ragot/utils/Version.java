@@ -1,4 +1,4 @@
-package ua.realalpha.ragot.version;
+package ua.realalpha.ragot.utils;
 
 import org.bukkit.Bukkit;
 
